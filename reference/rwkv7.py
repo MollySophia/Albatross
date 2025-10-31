@@ -34,9 +34,6 @@ def __nop(ob): return ob
 DTYPE = torch.half
 
 ############################################### gems ###################################################
-os.environ['USE_C_EXTENSION'] = '1'
-# os.environ['FLAGGEMS_SOURCE_DIR'] = '/home/xujiahao/rwkv/gems/FlagGems/src/flag_gems'
-os.environ['FLAGGEMS_SOURCE_DIR'] = os.path.abspath(os.path.join(current_path, "../gems/FlagGems/src/flag_gems"))
 import flag_gems
 
 
@@ -401,8 +398,8 @@ def RWKV_x070_CMix_one(x, x_prev, x_k, K_, V_):
     x_prev[1] = x
     k = x + xx * x_k
     k = torch.relu(k @ K_) ** 2
-    kv = k @ V_
-    # kv = torch.ops.flag_gems.rwkv_mm_sparsity(k, V_)
+    # kv = k @ V_
+    kv = torch.ops.flag_gems.rwkv_mm_sparsity(k, V_)
     return kv
 
 @MyStatic
