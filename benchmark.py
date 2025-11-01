@@ -167,6 +167,8 @@ static_state[1] = torch.empty_like(state[1], device="cuda")
 static_state[2] = torch.empty_like(state[2], device="cuda")
 static_output = torch.empty_like(out, device="cuda")
 
+static_output = model.forward(static_input, static_state)
+
 g = torch.cuda.CUDAGraph()
 with torch.cuda.graph(g):
     static_output = model.forward(static_input, static_state)
